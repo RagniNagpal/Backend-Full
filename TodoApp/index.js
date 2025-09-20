@@ -24,8 +24,8 @@ app.post("/todos",(req,res)=>{
     // console.log(req.body)
     const {title,description}=req.body;
 // todos.push(req.body)
-todos.push({...req.body, isChecked:false})
-return res.status(200).json({meaasge:"Todo added/created success"})
+todos.push({...req.body, isChecked:false , id:todos.length+1})
+return res.status(200).json({"message":"Todo added/created success"})
     // // or
     // const title=req.body.title;
     // const description=req.body.description;
@@ -45,12 +45,39 @@ app.get("/todos",(req,res)=>{
   return res.status(200).json({todos})
 })
 
-app.delete("/todos/id",(req,res)=>{
+app.put("/todos/:id",(req,res)=>{
+  // console.log(req.body);
   try{
-console.log(req.params.id);
-todos.slice(req.params.id,1)
+    const index=todos.findIndex(todos=> todo.id==req.params.id)
+    todos[index]={...todos[index],...req.body};
+      console.log(index);
+    
+return res.status(200).json({"message":"updated"})
+  }
+  catch(err){
+    return res.status(500).json({"message":"try again"})
   }
 })
+
+app.delete("/todos/:id",(req,res)=>{
+  // console.log(req.body);
+  try{
+    // const id=Number(req.params.id) +1 ;
+    // console.log(id)
+// console.log(Number(req.params.id) + 1);
+todos.splice(Number(req.params.id) - 1,1)
+
+//or
+
+// const filteredTodo=todos.filter(todos=> todo.id!=req.params.id)
+// console.log(filteredTodo)
+return res.status(200).json({"message":"deleeted"})
+  }
+  catch(err){
+    return res.status(500).json({"message":"try again"})
+  }
+})
+
 app.get("/",(req,res)=>{
   return res.status(200).json({
     "message":"kya haal hai bhai ke"

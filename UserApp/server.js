@@ -3,6 +3,28 @@ const app = express();
 
 app.use(express.json());
 
+async function dbConnect(){
+    try{
+      await mongoose.connect("")
+      console.log("db connected");
+    }catch(error){
+      console.log(error)
+    }
+}
+
+
+
+const UserSchema = new mongoose.Schema({
+  name:String,
+  email:{
+    type:String,
+    unique:true,
+  },
+  password:String,
+})
+
+const User=mongoose.model("User",userSchema);
+
 let users = [];
 
 app.post("/users", (req, res) => {

@@ -5,6 +5,7 @@ const app=express();
 app.use(express.json());
 
 const blogs=[];
+
 app.post("/blogs",(req,res)=>{
   // console.log(req.body);
   // blogs.push(req.body);

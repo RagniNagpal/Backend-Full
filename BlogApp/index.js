@@ -44,4 +44,5 @@ app.delete("/blogs/:id",(req,res)=>{
 
 app.listen(3000,()=>{
   console.log("server chal gya");
+  
 })

@@ -1,17 +1,15 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
-import Signup from './Signup'
+import Signup from "./Signup";
+import BlogForm from "./BlogForm";
+import BlogList from "./BlogList";
 
 function App() {
-  
-
   return (
     <>
-     <Signup />
+      <Signup />
+      <BlogForm />
+      <BlogList />
     </>
-  )
+  );
 }
 
-export default App
+export default App;

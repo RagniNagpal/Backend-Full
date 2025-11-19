@@ -1,51 +1,51 @@
-const express=require("express");
+// const express=require("express");
 
-const app=express();
+// const app=express();
 
-app.use(express.json());
+// app.use(express.json());
 
-const blogs=[];
+// const blogs=[];
 
-app.post("/blogs",(req,res)=>{
-  // console.log(req.body);
-  // blogs.push(req.body);
-  blogs.push({...req.body, id:blogs.length + 1})
-  return res.json({message : "blog created successfully"})
-})
+// app.post("/blogs",(req,res)=>{
+//   // console.log(req.body);
+//   // blogs.push(req.body);
+//   blogs.push({...req.body, id:blogs.length + 1})
+//   return res.json({message : "blog created successfully"})
+// })
 
-app.get("/blogs",(req,res)=>{
-  let publicBlogs=blogs.filter(blog=> !blogs.draft)
-  return res.json({publicBlogs});
-})
+// app.get("/blogs",(req,res)=>{
+//   let publicBlogs=blogs.filter(blog=> !blogs.draft)
+//   return res.json({publicBlogs});
+// })
 
-app.get("/blogs/:id",(req,res)=>{
-  const {id}=req.params
-  let searchBlog=blogs.filter(blog=> blog.id==id)
-  return res.json({searchBlog});
-})
+// app.get("/blogs/:id",(req,res)=>{
+//   const {id}=req.params
+//   let searchBlog=blogs.filter(blog=> blog.id==id)
+//   return res.json({searchBlog});
+// })
 
-app.patch("/blogs/:id",(req,res)=>{
-  const { id } = req.params
-   // let index = blogs.findIndex(blog => blog.id == id )
+// app.patch("/blogs/:id",(req,res)=>{
+//   const { id } = req.params
+//    // let index = blogs.findIndex(blog => blog.id == id )
  
-    // blogs[index] = {...blogs[index] , ...req.body}
-  let updatedBlogs = blogs.map((blog, index) => blog.id == id ? ({ ...blogs[index], ...req.body }) : blog)
+//     // blogs[index] = {...blogs[index] , ...req.body}
+//   let updatedBlogs = blogs.map((blog, index) => blog.id == id ? ({ ...blogs[index], ...req.body }) : blog)
 
-    blogs = [...updatedBlogs]
+//     blogs = [...updatedBlogs]
 
-    return res.json({ message: "Blog updated successfully", updatedBlogs })
+//     return res.json({ message: "Blog updated successfully", updatedBlogs })
 
 
-})
+// })
 
-app.delete("/blogs/:id",(req,res)=>{
+// app.delete("/blogs/:id",(req,res)=>{
   
-})
+// })
 
-app.listen(3000,()=>{
-  console.log("server chal gya");
+// app.listen(3000,()=>{
+//   console.log("server chal gya");
   
-})
+// })
 
 
 
@@ -111,3 +111,26 @@ app.listen(3000,()=>{
 // });
 
 // module.exports = router;
+
+
+
+//with controller, routes
+const express = require("express");
+const cors = require("cors");
+const dbConnect = require("./db");
+
+const app = express();
+app.use(cors());
+app.use(express.json());
+
+// Connect DB
+dbConnect();
+
+// Routes
+const blogRoutes = require("./routes/blogRoutes");
+app.use("/api/blogs", blogRoutes);
+
+const userRoutesV1 = require("./routes/v1/userRoutes");
+app.use("/api/v1", userRoutesV1);
+
+app.listen(3000, () => console.log("Server running on port 3000"));

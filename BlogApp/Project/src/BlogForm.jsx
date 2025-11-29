@@ -1,8 +1,12 @@
 import { useState } from "react";
-import { createBlog } from "./api";
+import { createBlog, getAllBlogs } from "./api";
 
-export default function BlogForm({ onBlogCreated }) {
-  const [blog, setBlog] = useState({ title: "", description: "", draft: false });
+export default function BlogForm({ onBlogsUpdated }) {
+  const [blog, setBlog] = useState({
+    title: "",
+    description: "",
+    draft: false,
+  });
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -12,12 +16,15 @@ export default function BlogForm({ onBlogCreated }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
+      console.log("Creating blog:", blog);
       await createBlog(blog);
-      alert("Blog created!");
+      alert("Blog created successfully!");
       setBlog({ title: "", description: "", draft: false });
-      onBlogCreated(); // Refresh blogs
+
+      // Refresh blogs in parent
+      if (onBlogsUpdated) onBlogsUpdated();
     } catch (err) {
-      console.error(err);
+      console.error("Error creating blog:", err.response || err);
       alert("Error creating blog");
     }
   };
@@ -26,10 +33,26 @@ export default function BlogForm({ onBlogCreated }) {
     <div style={{ width: "400px", margin: "20px auto" }}>
       <h2>Create Blog</h2>
       <form onSubmit={handleSubmit}>
-        <input name="title" placeholder="Title" value={blog.title} onChange={handleChange} /><br /><br />
-        <textarea name="description" placeholder="Description" value={blog.description} onChange={handleChange} /><br /><br />
+        <input
+          name="title"
+          placeholder="Title"
+          value={blog.title}
+          onChange={handleChange}
+        /><br /><br />
+        <textarea
+          name="description"
+          placeholder="Description"
+          value={blog.description}
+          onChange={handleChange}
+        /><br /><br />
         <label>
-          Draft: <input type="checkbox" name="draft" checked={blog.draft} onChange={handleChange} />
+          Draft:{" "}
+          <input
+            type="checkbox"
+            name="draft"
+            checked={blog.draft}
+            onChange={handleChange}
+          />
         </label><br /><br />
         <button type="submit">Create</button>
       </form>
